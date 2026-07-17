@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Montagem — Painel de Instalação</title>
+<meta name="description" content="Escaneie o QR code da peça e siga o passo a passo em vídeo e texto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14181c;
+    --bg-panel: #1a2026;
+    --paper: #ede7d8;
+    --paper-dim: #d9d2bd;
+    --accent: #ff7a45;
+    --accent-dim: #7a3d24;
+    --teal: #5cc9c0;
+    --line: #384049;
+    --text: #e9e4d8;
+    --text-dim: #909aa6;
+    --danger: #ff5a5a;
+    --radius: 2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px) 0 0/100% 42px,
+      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0/42px 100%,
+      var(--bg);
+    background-attachment: fixed;
+    background-blend-mode: normal;
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background: radial-gradient(ellipse at top, rgba(255,122,69,0.06), transparent 55%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    padding:40px 0 28px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal);
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:var(--teal); box-shadow:0 0 8px var(--teal);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(32px, 6vw, 52px);
+    line-height:1.02;
+    margin:2px 0 0;
+    letter-spacing:-0.01em;
+  }
+  h1 span{color:var(--accent);}
+  .sub{
+    color:var(--text-dim);
+    font-size:15px;
+    max-width:52ch;
+    line-height:1.5;
+  }
+
+  /* ---------- TAB PANEL (control panel) ---------- */
+  nav.panel{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:28px;
+    border-radius: var(--radius);
+    overflow:hidden;
+  }
+  nav.panel button{
+    appearance:none; border:none; cursor:pointer;
+    background:var(--bg-panel);
+    color:var(--text-dim);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    padding:16px 8px 14px;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    transition:background .15s ease, color .15s ease;
+  }
+  nav.panel button .led{
+    width:8px; height:8px; border-radius:50%;
+    background:#3a4048;
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  nav.panel button .lbl{letter-spacing:.04em; text-transform:uppercase; text-align:center;}
+  nav.panel button .num{color:#5c6470; font-size:11px;}
+  nav.panel button:hover{background:#20272e; color:var(--text);}
+  nav.panel button.active{background:var(--bg); color:var(--text);}
+  nav.panel button.active .led{background:var(--accent); box-shadow:0 0 10px var(--accent);}
+  nav.panel button.active .num{color:var(--accent);}
+
+  @media (max-width:640px){
+    nav.panel{grid-template-columns:repeat(2, 1fr);}
+  }
+
+  /* ---------- PANELS ---------- */
+  .panel-content{display:none; padding-top:32px;}
+  .panel-content.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .task-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:16px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px; margin-bottom:24px;
+  }
+  .task-head h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:28px; margin:0 0 6px;
+  }
+  .task-head p{color:var(--text-dim); margin:0; max-width:48ch; font-size:14px; line-height:1.55;}
+  .badge{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    border:1px solid var(--line); color:var(--text-dim);
+    padding:5px 10px; border-radius:var(--radius); white-space:nowrap;
+  }
+
+  /* video */
+  .video-frame{
+    position:relative; width:100%; aspect-ratio:16/9;
+    background:#0e1216; border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; margin-bottom:26px;
+  }
+  .video-frame iframe{width:100%; height:100%; border:0; display:block;}
+  .video-empty{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; padding:24px; text-align:center;
+  }
+  .video-empty .play{
+    width:52px; height:52px; border-radius:50%; border:1px solid var(--accent);
+    display:flex; align-items:center; justify-content:center; color:var(--accent);
+  }
+  .video-empty p{color:var(--text-dim); font-size:13px; max-width:36ch; margin:0; line-height:1.5;}
+  .video-empty code{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal);
+    background:rgba(92,201,192,0.08); padding:2px 6px; border-radius:2px;
+  }
+
+  /* meta row: tools + time */
+  .meta-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
+  .meta-chip{
+    display:flex; align-items:center; gap:7px;
+    background:var(--bg-panel); border:1px solid var(--line);
+    padding:8px 12px; border-radius:var(--radius);
+    font-size:12.5px; color:var(--text-dim);
+  }
+  .meta-chip b{color:var(--text); font-weight:600;}
+
+  /* steps */
+  .steps{list-style:none; margin:0; padding:0; position:relative;}
+  .steps::before{
+    content:""; position:absolute; left:15px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(var(--accent), var(--line) 90%);
+  }
+  .steps li{
+    position:relative; padding:0 0 26px 46px; 
+  }
+  .steps li:last-child{padding-bottom:0;}
+  .steps li .n{
+    position:absolute; left:0; top:0; width:31px; height:31px;
+    border-radius:50%; background:var(--bg); border:1px solid var(--accent);
+    color:var(--accent); font-family:'JetBrains Mono', monospace; font-size:13px;
+    display:flex; align-items:center; justify-content:center; font-weight:700;
+  }
+  .steps li h3{margin:2px 0 5px; font-size:16px; font-family:'Space Grotesk', sans-serif; font-weight:600;}
+  .steps li p{margin:0; color:var(--text-dim); font-size:14px; line-height:1.6;}
+
+  .warn{
+    display:flex; gap:12px; align-items:flex-start;
+    background:rgba(255,90,90,0.07); border:1px solid rgba(255,90,90,0.35);
+    padding:14px 16px; border-radius:var(--radius); margin-top:28px;
+  }
+  .warn .ic{color:var(--danger); font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px;}
+  .warn p{margin:0; font-size:13.5px; color:#ecb9b9; line-height:1.55;}
+
+  footer{
+    margin-top:60px; padding-top:22px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color:#5c6470;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Painel de instalação — leia via QR Code</span>
+    <h1>Guia de <span>Montagem</span></h1>
+    <p class="sub">Escolha a peça que você está instalando. Cada aba tem o vídeo curto e o passo a passo — mesmo conteúdo que o QR Code impresso no suporte abre direto.</p>
+  </header>
+
+  <nav class="panel" role="tablist" aria-label="Peças">
+    <button class="tab active" data-tab="ram" role="tab" aria-selected="true">
+      <span class="led"></span>
+      <span class="num">01</span>
+      <span class="lbl">Memória RAM</span>
+    </button>
+    <button class="tab" data-tab="ssd" role="tab" aria-selected="false">
+      <span class="led"></span>
+      <span class="num">02</span>
+      <span class="lbl">SSD</span>
+    </button>
+    <button class="tab" data-tab="pasta" role="tab" aria-selected="false">
+      <span class="led"></span>
+      <span class="num">03</span>
+      <span class="lbl">Pasta Térmica</span>
+    </button>
+    <button class="tab" data-tab="bios" role="tab" aria-selected="false">
+      <span class="led"></span>
+      <span class="num">04</span>
+      <span class="lbl">BIOS</span>
+    </button>
+  </nav>
+
+  <!-- ===================== RAM ===================== -->
+  <section class="panel-content active" id="tab-ram">
+    <div class="task-head">
+      <div>
+        <h2>Instalação da memória RAM</h2>
+        <p>Encaixar o pente de memória no slot correto da placa-mãe.</p>
+      </div>
+      <span class="badge">~3 min</span>
+    </div>
+
+    <div class="video-frame" data-video-slot="ram"></div>
+
+    <div class="meta-row">
+      <div class="meta-chip">🔧 <b>Ferramenta:</b>&nbsp;nenhuma</div>
+      <div class="meta-chip">⚡ <b>Cuidado:</b>&nbsp;descarga estática</div>
+      <div class="meta-chip">🖥️ <b>PC:</b>&nbsp;desligado e desconectado</div>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="n">1</span>
+        <h3>Desligue e desconecte o cabo de energia</h3>
+        <p>Retire o computador da tomada antes de abrir o gabinete. Encoste em uma parte metálica do gabinete para descarregar estática do corpo.</p>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <h3>Abra as travas do slot</h3>
+        <p>Localize os slots de memória ao lado do processador e abra as travas plásticas das duas pontas, empurrando-as para fora.</p>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <h3>Alinhe o encaixe (chanfro)</h3>
+        <p>O pente de memória só entra de um jeito: repare no pequeno chanfro na parte inferior e alinhe com a divisão do slot.</p>
+      </li>
+      <li>
+        <span class="n">4</span>
+        <h3>Pressione até travar</h3>
+        <p>Empurre com firmeza e igual dos dois lados até ouvir o "clique" e as travas voltarem sozinhas para a posição fechada.</p>
+      </li>
+      <li>
+        <span class="n">5</span>
+        <h3>Confira o slot certo</h3>
+        <p>Se a placa tiver 4 slots e você está instalando 2 pentes, use os slots recomendados no manual da placa (geralmente A2 e B2) para ativar o dual channel.</p>
+      </li>
+    </ol>
+
+    <div class="warn">
+      <span class="ic">!</span>
+      <p>Se a memória não entrar com uma pressão firme e uniforme, pare e confira o alinhamento do chanfro — não force.</p>
+    </div>
+  </section>
+
+  <!-- ===================== SSD ===================== -->
+  <section class="panel-content" id="tab-ssd">
+    <div class="task-head">
+      <div>
+        <h2>Instalação do SSD</h2>
+        <p>Passo a passo para SSD M.2 (direto na placa) e SSD SATA (com cabos).</p>
+      </div>
+      <span class="badge">~5 min</span>
+    </div>
+
+    <div class="video-frame" data-video-slot="ssd"></div>
+
+    <div class="meta-row">
+      <div class="meta-chip">🔧 <b>Ferramenta:</b>&nbsp;chave Phillips</div>
+      <div class="meta-chip">🔩 <b>Peça:</b>&nbsp;parafuso do M.2 (vem na placa)</div>
+      <div class="meta-chip">🖥️ <b>PC:</b>&nbsp;desligado e desconectado</div>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="n">1</span>
+        <h3>M.2 — localize o slot</h3>
+        <p>É o conector estreito e comprido, deitado na placa-mãe, geralmente com uma placa metálica (dissipador) por cima que precisa ser removida antes.</p>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <h3>M.2 — remova o parafuso e insira em ângulo</h3>
+        <p>Retire o parafuso guia, encaixe o SSD no conector em um ângulo de ~30°, empurre até entrar por completo.</p>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <h3>M.2 — abaixe e fixe</h3>
+        <p>Pressione a ponta do SSD para baixo até ficar nivelada e recoloque o parafuso para travar. Recoloque o dissipador, se houver.</p>
+      </li>
+      <li>
+        <span class="n">4</span>
+        <h3>SATA — fixe no gabinete</h3>
+        <p>Encaixe o SSD 2,5" na baia/suporte do gabinete e prenda com os parafusos laterais.</p>
+      </li>
+      <li>
+        <span class="n">5</span>
+        <h3>SATA — conecte os dois cabos</h3>
+        <p>Ligue o cabo de dados SATA (fino) até a placa-mãe e o cabo de energia SATA (largo) até a fonte. Cada um só entra de um jeito.</p>
+      </li>
+    </ol>
+
+    <div class="warn">
+      <span class="ic">!</span>
+      <p>Nunca force o SSD M.2 na horizontal antes de destravar o parafuso guia — ele precisa entrar em ângulo primeiro.</p>
+    </div>
+  </section>
+
+  <!-- ===================== PASTA TÉRMICA ===================== -->
+  <section class="panel-content" id="tab-pasta">
+    <div class="task-head">
+      <div>
+        <h2>Troca de pasta térmica</h2>
+        <p>Remover a pasta antiga do processador e aplicar uma nova camada.</p>
+      </div>
+      <span class="badge">~10 min</span>
+    </div>
+
+    <div class="video-frame" data-video-slot="pasta"></div>
+
+    <div class="meta-row">
+      <div class="meta-chip">🧴 <b>Item:</b>&nbsp;álcool isopropílico</div>
+      <div class="meta-chip">🧻 <b>Item:</b>&nbsp;pano sem fiapos</div>
+      <div class="meta-chip">🧪 <b>Item:</b>&nbsp;pasta térmica nova</div>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="n">1</span>
+        <h3>Desligue e remova o cooler</h3>
+        <p>Desconecte o cabo do cooler na placa-mãe e solte os parafusos ou a trava do cooler seguindo a ordem em cruz (X), com cuidado ao retirar do processador.</p>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <h3>Limpe a pasta antiga</h3>
+        <p>Com o pano levemente umedecido em álcool isopropílico, limpe o topo do processador e a base do cooler até não sobrar resíduo.</p>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <h3>Aplique a pasta nova</h3>
+        <p>Coloque uma quantidade do tamanho de um grão de arroz (ou um pequeno ponto) no centro do processador — não é preciso espalhar.</p>
+      </li>
+      <li>
+        <span class="n">4</span>
+        <h3>Reinstale o cooler</h3>
+        <p>Posicione o cooler alinhado e aperte os parafusos em cruz (X), um pouco de cada vez, para distribuir a pressão igualmente.</p>
+      </li>
+      <li>
+        <span class="n">5</span>
+        <h3>Reconecte o cabo do cooler</h3>
+        <p>Ligue o conector do cooler de volta ao pino "CPU_FAN" da placa-mãe antes de fechar o gabinete.</p>
+      </li>
+    </ol>
+
+    <div class="warn">
+      <span class="ic">!</span>
+      <p>Pasta térmica em excesso pode escorrer para a placa-mãe. Menos é mais — uma camada fina já é suficiente.</p>
+    </div>
+  </section>
+
+  <!-- ===================== BIOS ===================== -->
+  <section class="panel-content" id="tab-bios">
+    <div class="task-head">
+      <div>
+        <h2>Configuração da BIOS</h2>
+        <p>Primeiros ajustes depois de montar ou atualizar o hardware.</p>
+      </div>
+      <span class="badge">~5 min</span>
+    </div>
+
+    <div class="video-frame" data-video-slot="bios"></div>
+
+    <div class="meta-row">
+      <div class="meta-chip">⌨️ <b>Tecla:</b>&nbsp;Del ou F2 no boot</div>
+      <div class="meta-chip">🖥️ <b>PC:</b>&nbsp;ligado, antes do Windows abrir</div>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="n">1</span>
+        <h3>Entre na BIOS</h3>
+        <p>Ligue o PC e pressione repetidamente <b>Del</b> (ou <b>F2</b>, depende da placa) assim que a tela ligar, antes do sistema operacional abrir.</p>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <h3>Ative o XMP/DOCP da memória</h3>
+        <p>Procure "XMP", "DOCP" ou "EXPO" (geralmente na tela inicial ou em Ai Tweaker/Overclocking) e ative o perfil para a RAM rodar na velocidade anunciada.</p>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <h3>Confira o modo do armazenamento</h3>
+        <p>Em Storage/SATA Configuration, confirme que está em modo <b>AHCI</b> — necessário para o SSD funcionar corretamente.</p>
+      </li>
+      <li>
+        <span class="n">4</span>
+        <h3>Ajuste a ordem de boot</h3>
+        <p>Em Boot Priority, coloque o SSD/HD onde está o sistema operacional como primeira opção de inicialização.</p>
+      </li>
+      <li>
+        <span class="n">5</span>
+        <h3>Salve e saia</h3>
+        <p>Pressione <b>F10</b>, confirme "Save and Exit" e o computador vai reiniciar já com as novas configurações.</p>
+      </li>
+    </ol>
+
+    <div class="warn">
+      <span class="ic">!</span>
+      <p>Se a tela ficar preta após ativar o XMP, reinicie e volte a configuração padrão — pode ser incompatibilidade entre RAM e placa-mãe.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Guia de Montagem · use com QR Code</span>
+    <span>v1.0</span>
+  </footer>
+
+</div>
+
+<script>
+  // ---------------------------------------------------------------
+  // COLOQUE AQUI OS LINKS DOS SEUS VÍDEOS (embed do YouTube, Drive, etc)
+  // Deixe em branco ("") para mostrar o aviso de "vídeo em breve".
+  // Exemplo YouTube: "https://www.youtube.com/embed/SEU_ID_AQUI"
+  // Exemplo Drive:   "https://drive.google.com/file/d/SEU_ID/preview"
+  // ---------------------------------------------------------------
+  const VIDEOS = {
+    ram:   "",
+    ssd:   "",
+    pasta: "",
+    bios:  ""
+  };
+
+  function renderVideos(){
+    document.querySelectorAll('[data-video-slot]').forEach(function(frame){
+      const key = frame.getAttribute('data-video-slot');
+      const url = VIDEOS[key];
+      if (url) {
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        frame.appendChild(iframe);
+      } else {
+        frame.innerHTML = `
+          <div class="video-empty">
+            <div class="play">▶</div>
+            <p>Vídeo ainda não cadastrado para esta etapa.<br>
+            Edite <code>VIDEOS.${key}</code> no arquivo <code>index.html</code>.</p>
+          </div>`;
+      }
+    });
+  }
+
+  function initTabs(){
+    const buttons = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel-content');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const target = btn.getAttribute('data-tab');
+        buttons.forEach(function(b){
+          b.classList.toggle('active', b === btn);
+          b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+        });
+        panels.forEach(function(p){
+          p.classList.toggle('active', p.id === 'tab-' + target);
+        });
+      });
+    });
+  }
+
+  // Permite abrir direto numa aba via link, ex: site.com/#ssd
+  function openFromHash(){
+    const hash = window.location.hash.replace('#','');
+    if (['ram','ssd','pasta','bios'].includes(hash)) {
+      const btn = document.querySelector('.tab[data-tab="' + hash + '"]');
+      if (btn) btn.click();
+    }
+  }
+
+  renderVideos();
+  initTabs();
+  openFromHash();
+</script>
+</body>
+</html>
