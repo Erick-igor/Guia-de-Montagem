@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Montagem — Painel de Instalação</title>
+<meta name="description" content="Escaneie o QR code da peça e siga o passo a passo em vídeo e texto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14181c;
+    --bg-panel: #1a2026;
+    --accent: #ff7a45;
+    --teal: #5cc9c0;
+    --line: #384049;
+    --text: #e9e4d8;
+    --text-dim: #909aa6;
+    --danger: #ff5a5a;
+    --radius: 2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px) 0 0/100% 42px,
+      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0/42px 100%,
+      var(--bg);
+    background-attachment: fixed;
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background: radial-gradient(ellipse at top, rgba(255,122,69,0.06), transparent 55%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1;}
+
+  header{padding:40px 0 28px; display:flex; flex-direction:column; gap:10px;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal);
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:var(--teal); box-shadow:0 0 8px var(--teal);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(32px, 6vw, 52px);
+    line-height:1.02;
+    margin:2px 0 0;
+    letter-spacing:-0.01em;
+  }
+  h1 span{color:var(--accent);}
+  .sub{color:var(--text-dim); font-size:15px; max-width:56ch; line-height:1.5;}
+
+  /* ---------- SEARCH ---------- */
+  .quickbar{
+    display:flex; align-items:center; gap:10px;
+    margin-top:22px; background:var(--bg-panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:10px 14px;
+  }
+  .quickbar input{
+    flex:1; background:transparent; border:none; outline:none;
+    color:var(--text); font-family:'JetBrains Mono', monospace; font-size:13px;
+  }
+  .quickbar input::placeholder{color:#5c6470;}
+  .quickbar .ic{color:var(--text-dim); font-size:13px;}
+
+  /* ---------- CATEGORY GRID (nível 1) ---------- */
+  .category-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+    border-radius:var(--radius); overflow:hidden; margin-top:26px;
+  }
+  @media (min-width:640px){ .category-grid{ grid-template-columns:repeat(4, 1fr); } }
+  .category-grid button{
+    appearance:none; border:none; cursor:pointer;
+    background:var(--bg-panel); color:var(--text);
+    padding:20px 16px; text-align:left;
+    display:flex; flex-direction:column; gap:7px;
+    transition:background .15s ease;
+  }
+  .category-grid button:hover{background:#20272e;}
+  .category-grid button .cnum{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--accent);
+  }
+  .category-grid button .clabel{
+    font-family:'Space Grotesk', sans-serif; font-size:16px; font-weight:600; line-height:1.2;
+  }
+  .category-grid button .ccount{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim);
+  }
+
+  /* ---------- ITEM VIEW (nível 2) / SEARCH VIEW ---------- */
+  .item-view{margin-top:26px; display:none;}
+  .item-view-head{display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+  .back-btn{
+    appearance:none; border:1px solid var(--line); background:var(--bg-panel);
+    color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:12px;
+    padding:8px 12px; border-radius:var(--radius); cursor:pointer;
+    display:flex; align-items:center; gap:6px; transition:color .15s ease, border-color .15s ease;
+  }
+  .back-btn:hover{color:var(--text); border-color:var(--accent);}
+  .item-view-title{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--teal);
+  }
+  .nav-group-buttons{
+    display:flex; flex-wrap:wrap; gap:1px;
+    background:var(--line); border:1px solid var(--line);
+    border-radius:var(--radius); overflow:hidden;
+  }
+  .nav-group-buttons button{
+    appearance:none; border:none; cursor:pointer;
+    background:var(--bg-panel); color:var(--text-dim);
+    font-family:'JetBrains Mono', monospace; font-size:11.5px;
+    padding:13px 10px 11px; flex:1 1 128px; min-width:112px;
+    display:flex; flex-direction:column; align-items:center; gap:7px;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-group-buttons button .led{
+    width:7px; height:7px; border-radius:50%; background:#3a4048;
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  .nav-group-buttons button .lbl{letter-spacing:.03em; text-transform:uppercase; text-align:center;}
+  .nav-group-buttons button .sublbl{color:#5c6470; font-size:9.5px; text-transform:none; letter-spacing:0;}
+  .nav-group-buttons button .num{color:#5c6470; font-size:10.5px;}
+  .nav-group-buttons button:hover{background:#20272e; color:var(--text);}
+  .nav-group-buttons button.active{background:var(--bg); color:var(--text);}
+  .nav-group-buttons button.active .led{background:var(--accent); box-shadow:0 0 10px var(--accent);}
+  .nav-group-buttons button.active .num{color:var(--accent);}
+  .empty-search{color:var(--text-dim); font-size:13px; padding:16px; font-family:'JetBrains Mono', monospace;}
+
+  /* ---------- PANELS ---------- */
+  .panel-content{display:none; padding-top:32px;}
+  .panel-content.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .task-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:16px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px; margin-bottom:24px;
+  }
+  .task-head h2{font-family:'Space Grotesk', sans-serif; font-size:26px; margin:0 0 6px;}
+  .task-head p{color:var(--text-dim); margin:0; max-width:50ch; font-size:14px; line-height:1.55;}
+  .badge{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; border:1px solid var(--line); color:var(--text-dim);
+    padding:5px 10px; border-radius:var(--radius); white-space:nowrap;
+  }
+
+  .video-frame{
+    position:relative; width:100%; aspect-ratio:16/9;
+    background:#0e1216; border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; margin-bottom:26px;
+  }
+  .video-frame iframe{width:100%; height:100%; border:0; display:block;}
+  .video-empty{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; padding:24px; text-align:center;
+  }
+  .video-empty .play{
+    width:52px; height:52px; border-radius:50%; border:1px solid var(--accent);
+    display:flex; align-items:center; justify-content:center; color:var(--accent);
+  }
+  .video-empty p{color:var(--text-dim); font-size:13px; max-width:36ch; margin:0; line-height:1.5;}
+  .video-empty code{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal);
+    background:rgba(92,201,192,0.08); padding:2px 6px; border-radius:2px;
+  }
+
+  .meta-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
+  .meta-chip{
+    display:flex; align-items:center; gap:7px;
+    background:var(--bg-panel); border:1px solid var(--line);
+    padding:8px 12px; border-radius:var(--radius);
+    font-size:12.5px; color:var(--text-dim);
+  }
+  .meta-chip b{color:var(--text); font-weight:600;}
+
+  .steps{list-style:none; margin:0; padding:0; position:relative;}
+  .steps::before{
+    content:""; position:absolute; left:15px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(var(--accent), var(--line) 90%);
+  }
+  .steps li{position:relative; padding:0 0 26px 46px;}
+  .steps li:last-child{padding-bottom:0;}
+  .steps li .n{
+    position:absolute; left:0; top:0; width:31px; height:31px;
+    border-radius:50%; background:var(--bg); border:1px solid var(--accent);
+    color:var(--accent); font-family:'JetBrains Mono', monospace; font-size:13px;
+    display:flex; align-items:center; justify-content:center; font-weight:700;
+  }
+  .steps li h3{margin:2px 0 5px; font-size:16px; font-family:'Space Grotesk', sans-serif; font-weight:600;}
+  .steps li p{margin:0; color:var(--text-dim); font-size:14px; line-height:1.6;}
+
+  .warn{
+    display:flex; gap:12px; align-items:flex-start;
+    background:rgba(255,90,90,0.07); border:1px solid rgba(255,90,90,0.35);
+    padding:14px 16px; border-radius:var(--radius); margin-top:28px;
+  }
+  .warn .ic{color:var(--danger); font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px;}
+  .warn p{margin:0; font-size:13.5px; color:#ecb9b9; line-height:1.55;}
+
+  footer{
+    margin-top:60px; padding-top:22px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color:#5c6470;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Painel de instalação — leia via QR Code</span>
+    <h1>Guia de <span>Montagem</span></h1>
+    <p class="sub">Escolha a categoria e depois a peça que você está instalando. Cada aba tem o vídeo curto e o passo a passo — mesmo conteúdo que o QR Code impresso no suporte abre direto.</p>
+  </header>
+
+  <div class="quickbar">
+    <span class="ic">🔍</span>
+    <input type="text" id="quickSearch" placeholder="Buscar peça (ex: cooler, fonte, SATA)...">
+  </div>
+
+  <div class="category-grid" id="categoryGrid"></div>
+
+  <div class="item-view" id="itemView">
+    <div class="item-view-head">
+      <button class="back-btn" id="backBtn">← Categorias</button>
+      <span class="item-view-title" id="itemViewTitle"></span>
+    </div>
+    <div class="nav-group-buttons" id="itemButtons"></div>
+  </div>
+
+  <div class="item-view" id="searchView">
+    <div class="item-view-head">
+      <span class="item-view-title">Resultados da busca</span>
+    </div>
+    <div class="nav-group-buttons" id="searchButtons"></div>
+  </div>
+
+  <div id="panelsContainer"></div>
+
+  <footer>
+    <span>Guia de Montagem · use com QR Code</span>
+    <span>v2.1 · 20 componentes em 7 categorias</span>
+  </footer>
+
+</div>
+
+<script>
+/* =========================================================================
+   DADOS DE CADA COMPONENTE
+   Para editar um texto, procure o "id" da peça abaixo e mude os campos.
+   Para adicionar vídeo, vá até o objeto VIDEOS mais abaixo.
+   ========================================================================= */
+const COMPONENTS = [
+  { id:"cpu", label:"Processador", title:"Instalação do Processador (CPU)",
+    desc:"Encaixar o processador no soquete da placa-mãe antes de instalar o cooler.",
+    time:"~3 min", tools:["🔧 Ferramenta: nenhuma","⚡ Cuidado: pinos do soquete"],
+    steps:[
+      {title:"Destrave o soquete", desc:"Abra a alavanca metálica ao lado do soquete da CPU e levante a tampa de proteção."},
+      {title:"Alinhe a seta/triângulo", desc:"Localize a pequena marca dourada no canto do processador e alinhe com a marca correspondente no soquete."},
+      {title:"Apoie sem pressionar", desc:"Encaixe o processador delicadamente pelo próprio peso; ele deve entrar sem nenhum esforço."},
+      {title:"Feche a alavanca", desc:"Abaixe a tampa e trave a alavanca lateral, sentindo uma leve resistência no fim do curso."}
+    ],
+    warning:"Nunca pressione o processador para baixo — se ele não encaixar sozinho, o alinhamento está errado." },
+
+  { id:"ram", label:"Memória RAM", title:"Instalação da memória RAM",
+    desc:"Encaixar o pente de memória no slot correto da placa-mãe.",
+    time:"~3 min", tools:["🔧 Ferramenta: nenhuma","⚡ Cuidado: descarga estática","🖥️ PC: desligado e desconectado"],
+    steps:[
+      {title:"Desligue e desconecte o cabo de energia", desc:"Retire o computador da tomada antes de abrir o gabinete. Encoste em uma parte metálica do gabinete para descarregar estática do corpo."},
+      {title:"Abra as travas do slot", desc:"Localize os slots de memória ao lado do processador e abra as travas plásticas das duas pontas."},
+      {title:"Alinhe o encaixe (chanfro)", desc:"O pente de memória só entra de um jeito: repare no pequeno chanfro na parte inferior e alinhe com a divisão do slot."},
+      {title:"Pressione até travar", desc:"Empurre com firmeza e igual dos dois lados até ouvir o clique e as travas voltarem sozinhas para a posição fechada."},
+      {title:"Confira o slot certo", desc:"Se for instalar 2 pentes, use os slots recomendados no manual da placa (geralmente A2 e B2) para ativar o dual channel."}
+    ],
+    warning:"Se a memória não entrar com uma pressão firme e uniforme, pare e confira o alinhamento do chanfro — não force." },
+
+  { id:"placamae", label:"Placa-mãe", title:"Instalação da placa-mãe no gabinete",
+    desc:"Fixar a placa-mãe nos espaçadores do gabinete antes de conectar os demais componentes.",
+    time:"~8 min", tools:["🔧 Ferramenta: chave Phillips","🔩 Peça: parafusos espaçadores (standoffs)"],
+    steps:[
+      {title:"Confira os standoffs", desc:"Instale os pinos metálicos espaçadores no gabinete exatamente nas posições que combinam com os furos da sua placa-mãe."},
+      {title:"Instale o painel de I/O", desc:"Encaixe a chapa de conexões (I/O shield) que acompanha a placa-mãe no recorte traseiro do gabinete, antes de colocar a placa."},
+      {title:"Posicione a placa", desc:"Alinhe os furos da placa com os standoffs e as portas traseiras com o painel de I/O."},
+      {title:"Aparafuse em cruz", desc:"Aperte os parafusos alternando em cruz (X), sem apertar demais, até a placa ficar firme e nivelada."}
+    ],
+    warning:"Um standoff fora do lugar pode encostar na parte de trás da placa e causar curto — confira antes de aparafusar." },
+
+  { id:"gpu", label:"Placa de Vídeo", title:"Instalação da Placa de Vídeo (GPU)",
+    desc:"Instalar a placa de vídeo no slot PCIe principal da placa-mãe.",
+    time:"~4 min", tools:["🔧 Ferramenta: chave Phillips"],
+    steps:[
+      {title:"Remova os espaços do gabinete", desc:"Retire as tampas metálicas (slot covers) na parte traseira correspondentes ao tamanho da placa."},
+      {title:"Abra a trava do slot PCIe", desc:"Localize o slot PCIe x16 (o maior, mais próximo do processador) e abra a trava plástica na ponta."},
+      {title:"Encaixe e pressione", desc:"Alinhe os contatos dourados da placa com o slot e pressione uniformemente até ouvir o clique da trava."},
+      {title:"Fixe e conecte energia", desc:"Aparafuse a placa na lateral do gabinete e conecte os cabos de energia PCIe da fonte, se a placa exigir."}
+    ],
+    warning:"Se a placa não firmar de nível, verifique se algum cabo está empurrando ela por baixo." },
+
+  { id:"ssd", label:"SSD", title:"Instalação do SSD",
+    desc:"Passo a passo para SSD M.2 (direto na placa) e SSD SATA (com cabos).",
+    time:"~5 min", tools:["🔧 Ferramenta: chave Phillips","🔩 Peça: parafuso do M.2 (vem na placa)"],
+    steps:[
+      {title:"M.2 — localize o slot", desc:"É o conector estreito e comprido, deitado na placa-mãe, geralmente com um dissipador metálico por cima que precisa ser removido antes."},
+      {title:"M.2 — remova o parafuso e insira em ângulo", desc:"Retire o parafuso guia, encaixe o SSD no conector em um ângulo de ~30°, empurre até entrar por completo."},
+      {title:"M.2 — abaixe e fixe", desc:"Pressione a ponta do SSD para baixo até ficar nivelada e recoloque o parafuso para travar."},
+      {title:"SATA — fixe no gabinete", desc:"Encaixe o SSD 2,5\" na baia/suporte do gabinete e prenda com os parafusos laterais."},
+      {title:"SATA — conecte os dois cabos", desc:"Ligue o cabo de dados SATA (fino) até a placa-mãe e o cabo de energia SATA (largo) até a fonte."}
+    ],
+    warning:"Nunca force o SSD M.2 na horizontal antes de destravar o parafuso guia — ele precisa entrar em ângulo primeiro." },
+
+  { id:"hd", label:"HD", title:"Instalação do HD (Disco Rígido)",
+    desc:"Instalar um HD tradicional (SATA) como armazenamento adicional.",
+    time:"~4 min", tools:["🔧 Ferramenta: chave Phillips"],
+    steps:[
+      {title:"Fixe na baia do gabinete", desc:"Encaixe o HD na baia de 3,5\" e aparafuse dos dois lados para evitar vibração."},
+      {title:"Conecte o cabo de dados", desc:"Ligue o cabo SATA de dados (fino) entre o HD e uma porta SATA da placa-mãe."},
+      {title:"Conecte a energia", desc:"Ligue o conector SATA de energia (largo) vindo da fonte."},
+      {title:"Verifique na BIOS", desc:"Ligue o PC e confira se o HD aparece na lista de dispositivos detectados pela BIOS."}
+    ],
+    warning:"HDs são sensíveis a impacto — evite bater ou sacudir o disco enquanto estiver ligado." },
+
+  { id:"fonte", label:"Fonte", title:"Instalação da Fonte de Alimentação (PSU)",
+    desc:"Instalar a fonte no gabinete antes de distribuir os cabos.",
+    time:"~5 min", tools:["🔧 Ferramenta: chave Phillips"],
+    steps:[
+      {title:"Posicione a fonte", desc:"Encaixe a fonte na baia traseira do gabinete, geralmente com a ventoinha voltada para baixo ou para fora."},
+      {title:"Aparafuse", desc:"Fixe os 4 parafusos da parte de trás do gabinete."},
+      {title:"Organize os cabos", desc:"Passe os cabos modulares necessários pelos furos de passagem antes de conectar aos componentes."},
+      {title:"Ligue por último", desc:"Conecte o cabo de força na tomada só depois de todos os componentes internos estarem ligados entre si."}
+    ],
+    warning:"Confira a chave de voltagem (110V/220V) na parte de trás da fonte antes de ligar, se ela existir." },
+
+  { id:"gabinete", label:"Gabinete", title:"Montagem no Gabinete",
+    desc:"Preparar o gabinete e organizar a passagem de cabos antes de instalar os componentes.",
+    time:"~10 min", tools:["🔧 Ferramenta: chave Phillips","🔗 Item: abraçadeiras ou velcro"],
+    steps:[
+      {title:"Remova as laterais", desc:"Solte os parafusos traseiros e retire os dois painéis laterais do gabinete."},
+      {title:"Instale os standoffs", desc:"Confira se os espaçadores da placa-mãe já estão nas posições certas."},
+      {title:"Planeje a rota dos cabos", desc:"Use os furos passa-cabo atrás da bandeja da placa-mãe para manter os cabos escondidos."},
+      {title:"Prenda com abraçadeiras", desc:"Organize e prenda os cabos que sobram na parte de trás para não atrapalhar o fluxo de ar."}
+    ],
+    warning:null },
+
+  { id:"painel", label:"Painel Frontal", title:"Painel Frontal (Front Panel)",
+    desc:"Conectar os botões e portas do gabinete (power, reset, USB, áudio) na placa-mãe.",
+    time:"~6 min", tools:["🔧 Ferramenta: nenhuma","🔦 Ajuda: lanterna ou lupa"],
+    steps:[
+      {title:"Localize o conector Front Panel", desc:"Fica geralmente no canto inferior direito da placa-mãe, com pinos pequenos etiquetados (PWR_SW, RESET_SW, HDD_LED, etc)."},
+      {title:"Consulte o manual da placa", desc:"Cada fabricante organiza os pinos de um jeito, então confira o diagrama no manual antes de conectar."},
+      {title:"Conecte respeitando a polaridade", desc:"Os cabos de LED têm lado positivo e negativo; o cabo de power switch não tem polaridade."},
+      {title:"Conecte USB e áudio", desc:"Encaixe os conectores maiores de USB 3.0, USB 2.0 e áudio frontal (HD Audio) nos pinos correspondentes."}
+    ],
+    warning:"Conectar ao contrário não danifica a placa, mas o LED ou botão pode não funcionar — é só inverter se não funcionar." },
+
+  { id:"cooler", label:"Cooler de Ar", title:"Instalação do Cooler de Ar",
+    desc:"Instalar o dissipador de ar sobre o processador.",
+    time:"~8 min", tools:["🔧 Ferramenta: chave que acompanha o cooler"],
+    steps:[
+      {title:"Instale o backplate", desc:"Encaixe a placa de suporte na parte de trás da placa-mãe, se o cooler exigir."},
+      {title:"Aplique a pasta térmica", desc:"Coloque uma pequena quantidade no centro do processador antes de apoiar o cooler."},
+      {title:"Posicione o cooler", desc:"Alinhe o dissipador sobre o processador, sem deslizar, para não espalhar a pasta de forma irregular."},
+      {title:"Aperte em cruz", desc:"Fixe os parafusos alternando em X, aos poucos, até o cooler ficar firme e nivelado."},
+      {title:"Conecte o cabo do fan", desc:"Ligue o conector no pino \"CPU_FAN\" da placa-mãe."}
+    ],
+    warning:"Aperte os parafusos aos poucos e de forma alternada — apertar um lado todo primeiro pode entortar o encaixe." },
+
+  { id:"watercooler", label:"Water Cooler", title:"Instalação do Water Cooler (AIO)",
+    desc:"Instalar um cooler líquido all-in-one, do radiador ao bloco.",
+    time:"~15 min", tools:["🔧 Ferramenta: chave Phillips"],
+    steps:[
+      {title:"Escolha a posição do radiador", desc:"Defina onde o radiador vai ficar (topo ou frente do gabinete) e confira se cabe com as ventoinhas."},
+      {title:"Fixe as ventoinhas no radiador", desc:"Aparafuse as ventoinhas do kit no radiador antes de prender no gabinete."},
+      {title:"Instale o backplate e o bloco", desc:"Monte o suporte na placa-mãe e encaixe o bloco sobre o processador (já com pasta térmica aplicada)."},
+      {title:"Prenda o radiador no gabinete", desc:"Aparafuse o conjunto radiador + ventoinhas na posição escolhida."},
+      {title:"Conecte bomba e ventoinhas", desc:"Ligue o cabo da bomba no pino \"AIO_PUMP\" (ou CPU_FAN) e as ventoinhas no fan hub ou na placa-mãe."}
+    ],
+    warning:"Mantenha o radiador nivelado ao transportar o AIO antes da instalação, para evitar bolhas de ar no circuito." },
+
+  { id:"fans", label:"Ventoinhas", title:"Instalação de Ventoinhas do Gabinete",
+    desc:"Instalar ventoinhas extras para melhorar o fluxo de ar.",
+    time:"~5 min", tools:["🔧 Ferramenta: chave Phillips"],
+    steps:[
+      {title:"Defina o fluxo de ar", desc:"Ventoinhas na frente/base normalmente puxam ar para dentro; as de trás/topo expelem o ar quente."},
+      {title:"Confira o sentido da ventoinha", desc:"Uma seta na lateral do fan indica a direção do fluxo de ar."},
+      {title:"Aparafuse na posição", desc:"Fixe a ventoinha nos furos do gabinete com os 4 parafusos que acompanham o produto."},
+      {title:"Conecte na placa-mãe ou fan hub", desc:"Ligue o conector nos pinos \"SYS_FAN\" da placa-mãe ou em um hub/controladora de fans."}
+    ],
+    warning:"Muitas ventoinhas empurrando ar na mesma direção sem saída criam turbulência — mantenha equilíbrio entre entrada e saída de ar." },
+
+  { id:"pasta", label:"Pasta Térmica", title:"Troca de pasta térmica",
+    desc:"Remover a pasta antiga do processador e aplicar uma nova camada.",
+    time:"~10 min", tools:["🧴 Item: álcool isopropílico","🧻 Item: pano sem fiapos","🧪 Item: pasta térmica nova"],
+    steps:[
+      {title:"Desligue e remova o cooler", desc:"Desconecte o cabo do cooler na placa-mãe e solte os parafusos ou a trava do cooler seguindo a ordem em cruz (X)."},
+      {title:"Limpe a pasta antiga", desc:"Com o pano levemente umedecido em álcool isopropílico, limpe o topo do processador e a base do cooler até não sobrar resíduo."},
+      {title:"Aplique a pasta nova", desc:"Coloque uma quantidade do tamanho de um grão de arroz (ou um pequeno ponto) no centro do processador — não é preciso espalhar."},
+      {title:"Reinstale o cooler", desc:"Posicione o cooler alinhado e aperte os parafusos em cruz (X), um pouco de cada vez."},
+      {title:"Reconecte o cabo do cooler", desc:"Ligue o conector do cooler de volta ao pino \"CPU_FAN\" da placa-mãe antes de fechar o gabinete."}
+    ],
+    warning:"Pasta térmica em excesso pode escorrer para a placa-mãe. Menos é mais — uma camada fina já é suficiente." },
+
+  { id:"backplate", label:"Backplate", title:"Instalação do Backplate do Cooler",
+    desc:"Instalar a placa de suporte na parte de trás da placa-mãe para segurar coolers mais pesados.",
+    time:"~5 min", tools:["🔧 Ferramenta: chave Phillips","🔩 Peça: parafusos do kit do cooler"],
+    steps:[
+      {title:"Acesse a parte de trás da placa", desc:"Alguns backplates exigem acesso à parte de trás da placa-mãe antes dela ser fixada no gabinete."},
+      {title:"Posicione os pinos guia", desc:"Encaixe os pinos ou parafusos do backplate nos furos ao redor do soquete do processador."},
+      {title:"Prenda com as porcas/parafusos", desc:"Fixe do lado de fora (onde vai o cooler) com as porcas ou espaçadores que acompanham o kit."},
+      {title:"Confira o encaixe", desc:"Balance levemente a placa-mãe para garantir que o backplate está firme antes de prosseguir com o cooler."}
+    ],
+    warning:"Confira o manual do cooler — nem todo backplate é compatível com todo soquete (AM4, AM5, LGA1700, etc)." },
+
+  { id:"cabosenergia", label:"Cabos de Energia", title:"Cabos de Energia da Placa-mãe",
+    desc:"Conectar os cabos que alimentam a placa-mãe e o processador.",
+    time:"~4 min", tools:["🔧 Ferramenta: nenhuma"],
+    steps:[
+      {title:"Conecte o conector de 24 pinos", desc:"É o maior cabo da fonte; encaixe na lateral da placa-mãe até travar o clipe."},
+      {title:"Conecte o conector de CPU (4+4 ou 8 pinos)", desc:"Fica perto do processador, na parte superior da placa; alimenta exclusivamente o processador."},
+      {title:"Confira cabos da placa de vídeo", desc:"Se a GPU exigir, conecte os conectores PCIe (6 ou 8 pinos) vindos da fonte."},
+      {title:"Organize o excesso de cabo", desc:"Prenda os cabos que sobraram na parte de trás do gabinete para não atrapalhar o fluxo de ar."}
+    ],
+    warning:"O PC não liga (ou liga e desliga sozinho) se o conector de 24 pinos ou o de CPU não estiverem completamente encaixados." },
+
+  { id:"cabossata", label:"Cabos SATA", title:"Cabos SATA (dados e energia)",
+    desc:"Conectar HDs, SSDs SATA e leitores de disco à placa-mãe e à fonte.",
+    time:"~3 min", tools:["🔧 Ferramenta: nenhuma"],
+    steps:[
+      {title:"Identifique os dois cabos", desc:"O cabo de dados SATA é fino com conector em L; o cabo de energia SATA é mais largo, vindo direto da fonte."},
+      {title:"Conecte o cabo de dados", desc:"Ligue uma ponta no dispositivo (SSD/HD) e a outra em uma porta SATA numerada na placa-mãe."},
+      {title:"Conecte o cabo de energia", desc:"Encaixe o conector largo da fonte no dispositivo; ele só entra de um jeito."},
+      {title:"Anote a porta usada", desc:"Portas SATA numeradas menores costumam ter prioridade de boot — use a porta 0 ou 1 para o disco do sistema."}
+    ],
+    warning:null },
+
+  { id:"cabovideo", label:"Cabo de Vídeo", title:"Cabo de Vídeo / Monitor",
+    desc:"Conectar o monitor à saída de vídeo correta após montar o PC.",
+    time:"~2 min", tools:["🔌 Item: cabo HDMI ou DisplayPort"],
+    steps:[
+      {title:"Identifique onde plugar", desc:"Se você tem placa de vídeo dedicada, o cabo vai nela, não na placa-mãe (a saída da placa-mãe fica inativa nesse caso)."},
+      {title:"Escolha o cabo certo", desc:"Prefira DisplayPort ou HDMI conforme a taxa de atualização do seu monitor (144Hz+ costuma precisar de DisplayPort)."},
+      {title:"Conecte firme dos dois lados", desc:"Encaixe o cabo no monitor e na saída da placa de vídeo até sentir resistência leve."},
+      {title:"Confira a entrada no monitor", desc:"No menu do monitor, confira se a entrada selecionada (HDMI 1, DP, etc) é a mesma porta onde você plugou o cabo."}
+    ],
+    warning:"Se a tela não ligar, confirme que está usando a saída da placa de vídeo e não a da placa-mãe." },
+
+  { id:"wifi", label:"Wi-Fi / Bluetooth", title:"Placa Wi-Fi / Bluetooth",
+    desc:"Instalar uma placa de rede sem fio ou conectar as antenas de uma placa-mãe com Wi-Fi integrado.",
+    time:"~4 min", tools:["🔧 Ferramenta: chave Phillips (se for placa PCIe)"],
+    steps:[
+      {title:"Identifique o tipo", desc:"Pode ser um módulo M.2 (Key E) integrado à placa-mãe, ou uma placa PCIe separada."},
+      {title:"Instale o módulo M.2, se aplicável", desc:"Encaixe em ângulo no slot menor (geralmente próximo ao painel traseiro) e fixe com o parafuso pequeno."},
+      {title:"Rosqueie as antenas", desc:"Conecte as duas antenas externas nos conectores traseiros identificados (geralmente com o símbolo de Wi-Fi)."},
+      {title:"Posicione as antenas para cima", desc:"Deixe as antenas na vertical, longe de metais, para melhorar o sinal."}
+    ],
+    warning:null },
+
+  { id:"som", label:"Placa de Som", title:"Placa de Som Dedicada",
+    desc:"Instalar uma placa de som PCIe para áudio dedicado, no lugar do áudio integrado.",
+    time:"~4 min", tools:["🔧 Ferramenta: chave Phillips"],
+    steps:[
+      {title:"Escolha o slot PCIe", desc:"Prefira um slot PCIe x1 longe da placa de vídeo, para reduzir interferência."},
+      {title:"Remova a tampa do gabinete", desc:"Retire a tampa metálica correspondente na parte de trás do case."},
+      {title:"Encaixe e aparafuse", desc:"Pressione a placa no slot até firmar e prenda com um parafuso na lateral do gabinete."},
+      {title:"Desative o áudio onboard", desc:"Na BIOS ou no Gerenciador de Dispositivos do Windows, desative o áudio integrado para evitar conflito."}
+    ],
+    warning:null },
+
+  { id:"bios", label:"BIOS", title:"Configuração da BIOS",
+    desc:"Primeiros ajustes depois de montar ou atualizar o hardware.",
+    time:"~5 min", tools:["⌨️ Tecla: Del ou F2 no boot","🖥️ PC: ligado, antes do Windows abrir"],
+    steps:[
+      {title:"Entre na BIOS", desc:"Ligue o PC e pressione repetidamente Del (ou F2, depende da placa) assim que a tela ligar, antes do sistema operacional abrir."},
+      {title:"Ative o XMP/DOCP da memória", desc:"Procure \"XMP\", \"DOCP\" ou \"EXPO\" (geralmente em Ai Tweaker/Overclocking) e ative o perfil para a RAM rodar na velocidade anunciada."},
+      {title:"Confira o modo do armazenamento", desc:"Em Storage/SATA Configuration, confirme que está em modo AHCI — necessário para o SSD funcionar corretamente."},
+      {title:"Ajuste a ordem de boot", desc:"Em Boot Priority, coloque o SSD/HD onde está o sistema operacional como primeira opção de inicialização."},
+      {title:"Salve e saia", desc:"Pressione F10, confirme \"Save and Exit\" e o computador vai reiniciar já com as novas configurações."}
+    ],
+    warning:"Se a tela ficar preta após ativar o XMP, reinicie e volte a configuração padrão — pode ser incompatibilidade entre RAM e placa-mãe." }
+];
+
+/* Agrupamento das abas: cada categoria abre e mostra suas peças */
+const GROUPS = [
+  { label:"Núcleo do Sistema", items:["cpu","ram","placamae","gpu"] },
+  { label:"Armazenamento", items:["ssd","hd"] },
+  { label:"Energia & Gabinete", items:["fonte","gabinete","painel"] },
+  { label:"Refrigeração", items:["cooler","watercooler","fans","pasta","backplate"] },
+  { label:"Cabos & Conexões", items:["cabosenergia","cabossata","cabovideo"] },
+  { label:"Expansão", items:["wifi","som"] },
+  { label:"Software", items:["bios"] }
+];
+
+/* ---------------------------------------------------------------
+   COLOQUE AQUI OS LINKS DOS SEUS VÍDEOS (embed do YouTube, Drive, etc)
+   Deixe em branco ("") para mostrar o aviso de "vídeo em breve".
+   Exemplo YouTube: "https://www.youtube.com/embed/SEU_ID_AQUI"
+   Exemplo Drive:   "https://drive.google.com/file/d/SEU_ID/preview"
+   --------------------------------------------------------------- */
+const VIDEOS = {
+  cpu: "", ram: "", placamae: "", gpu: "", ssd: "", hd: "",
+  fonte: "", gabinete: "", painel: "", cooler: "", watercooler: "",
+  fans: "", pasta: "", backplate: "", cabosenergia: "", cabossata: "",
+  cabovideo: "", wifi: "", som: "", bios: ""
+};
+
+const byId = {};
+const groupIndexOf = {};
+COMPONENTS.forEach(function(c){ byId[c.id] = c; });
+GROUPS.forEach(function(g, gi){ g.items.forEach(function(id){ groupIndexOf[id] = gi; }); });
+
+let activeTab = null;
+
+/* ---------- nível 1: categorias ---------- */
+function renderCategories(){
+  const grid = document.getElementById('categoryGrid');
+  grid.innerHTML = '';
+  GROUPS.forEach(function(group, idx){
+    const btn = document.createElement('button');
+    btn.innerHTML =
+      '<span class="cnum">'+String(idx+1).padStart(2,'0')+'</span>' +
+      '<span class="clabel">'+group.label+'</span>' +
+      '<span class="ccount">'+group.items.length+' '+(group.items.length===1?'item':'itens')+'</span>';
+    btn.addEventListener('click', function(){ openCategory(idx); });
+    grid.appendChild(btn);
+  });
+}
+
+/* ---------- nível 2: itens de uma categoria ---------- */
+function openCategory(idx){
+  const group = GROUPS[idx];
+  document.getElementById('categoryGrid').style.display = 'none';
+  document.getElementById('searchView').style.display = 'none';
+  document.getElementById('quickSearch').value = '';
+
+  const itemView = document.getElementById('itemView');
+  itemView.style.display = 'block';
+  document.getElementById('itemViewTitle').textContent = group.label;
+
+  const row = document.getElementById('itemButtons');
+  row.innerHTML = '';
+  group.items.forEach(function(id, i){
+    const c = byId[id];
+    const btn = document.createElement('button');
+    btn.setAttribute('data-tab', id);
+    btn.innerHTML = '<span class="led"></span><span class="num">'+String(i+1).padStart(2,'0')+'</span><span class="lbl">'+c.label+'</span>';
+    btn.addEventListener('click', function(){ selectTab(id); });
+    row.appendChild(btn);
+  });
+
+  markActiveButtons();
+}
+
+function backToCategories(){
+  document.getElementById('itemView').style.display = 'none';
+  document.getElementById('searchView').style.display = 'none';
+  document.getElementById('categoryGrid').style.display = 'grid';
+}
+
+/* ---------- busca: lista plana, ignora categorias ---------- */
+function renderSearch(query){
+  document.getElementById('categoryGrid').style.display = 'none';
+  document.getElementById('itemView').style.display = 'none';
+  const searchView = document.getElementById('searchView');
+  searchView.style.display = 'block';
+
+  const row = document.getElementById('searchButtons');
+  row.innerHTML = '';
+
+  const groupLabelById = {};
+  GROUPS.forEach(function(g){ g.items.forEach(function(id){ groupLabelById[id] = g.label; }); });
+
+  const matches = COMPONENTS.filter(function(c){
+    const haystack = (c.label+' '+c.title+' '+groupLabelById[c.id]).toLowerCase();
+    return haystack.indexOf(query) !== -1;
+  });
+
+  if (matches.length === 0){
+    row.innerHTML = '<div class="empty-search">Nenhuma peça encontrada para "'+query+'".</div>';
+    return;
+  }
+
+  matches.forEach(function(c){
+    const btn = document.createElement('button');
+    btn.setAttribute('data-tab', c.id);
+    btn.innerHTML = '<span class="led"></span><span class="lbl">'+c.label+'</span><span class="sublbl">'+groupLabelById[c.id]+'</span>';
+    btn.addEventListener('click', function(){ selectTab(c.id); });
+    row.appendChild(btn);
+  });
+
+  markActiveButtons();
+}
+
+function markActiveButtons(){
+  document.querySelectorAll('.nav-group-buttons button').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-tab') === activeTab);
+  });
+}
+
+/* ---------- painéis de conteúdo ---------- */
+function renderPanels(){
+  const container = document.getElementById('panelsContainer');
+  COMPONENTS.forEach(function(c){
+    const section = document.createElement('section');
+    section.className = 'panel-content';
+    section.id = 'tab-' + c.id;
+
+    const toolsHtml = c.tools.map(function(t){ return '<div class="meta-chip">'+t+'</div>'; }).join('');
+
+    let stepsHtml = '';
+    c.steps.forEach(function(s, idx){
+      stepsHtml += '<li><span class="n">'+(idx+1)+'</span><h3>'+s.title+'</h3><p>'+s.desc+'</p></li>';
+    });
+
+    const warnHtml = c.warning ? (
+      '<div class="warn"><span class="ic">!</span><p>'+c.warning+'</p></div>'
+    ) : '';
+
+    section.innerHTML =
+      '<div class="task-head">' +
+        '<div><h2>'+c.title+'</h2><p>'+c.desc+'</p></div>' +
+        '<span class="badge">'+c.time+'</span>' +
+      '</div>' +
+      '<div class="video-frame" data-video-slot="'+c.id+'"></div>' +
+      '<div class="meta-row">'+toolsHtml+'</div>' +
+      '<ol class="steps">'+stepsHtml+'</ol>' +
+      warnHtml;
+
+    container.appendChild(section);
+  });
+}
+
+function renderVideos(){
+  document.querySelectorAll('[data-video-slot]').forEach(function(frame){
+    const key = frame.getAttribute('data-video-slot');
+    const url = VIDEOS[key];
+    if (url) {
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      frame.appendChild(iframe);
+    } else {
+      frame.innerHTML =
+        '<div class="video-empty">' +
+          '<div class="play">▶</div>' +
+          '<p>Vídeo ainda não cadastrado para esta etapa.<br>Edite <code>VIDEOS.'+key+'</code> no arquivo <code>index.html</code>.</p>' +
+        '</div>';
+    }
+  });
+}
+
+function selectTab(id){
+  activeTab = id;
+  markActiveButtons();
+  document.querySelectorAll('.panel-content').forEach(function(p){
+    p.classList.toggle('active', p.id === 'tab-' + id);
+  });
+  const target = document.getElementById('tab-' + id);
+  if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function initSearch(){
+  const input = document.getElementById('quickSearch');
+  input.addEventListener('input', function(){
+    const q = input.value.trim().toLowerCase();
+    if (q){ renderSearch(q); } else { backToCategories(); }
+  });
+}
+
+function openFromHash(){
+  const hash = window.location.hash.replace('#','');
+  if (hash && byId[hash]){
+    openCategory(groupIndexOf[hash]);
+    selectTab(hash);
+  }
+}
+
+document.getElementById('backBtn').addEventListener('click', backToCategories);
+
+renderCategories();
+renderPanels();
+renderVideos();
+initSearch();
+openFromHash();
+</script>
+</body>
+</html>
