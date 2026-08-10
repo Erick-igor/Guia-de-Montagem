@@ -27,19 +27,7 @@
   
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background-color: var(--bg);
-    background-image: url("images.jpeg");
-    background-size: 100% 42px, 42px 100%, cover, cover;
-    background-position: 0 0, 0 0, center, center;
-    background-repeat: repeat, repeat, no-repeat, no-repeat;
-    background-attachment: fixed, fixed, fixed, fixed;
-    color:var(--text);
-    font-family:'Inter', sans-serif;
-    -webkit-font-smoothing:antialiased;
-}
-  
+  body{    margin:0;    background:      linear-gradient(var(--line) 1px, transparent 1px) 0 0/100% 42px,      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0/42px 100%,      var(--bg);    background-attachment: fixed;    color:var(--text);    font-family:'Inter', sans-serif;    -webkit-font-smoothing:antialiased;       background-image: url("images.jpeg");    background-size: cover;    background-position: center;    background-repeat: no-repeat;}
   body::before{
     content:"";
     position:fixed; inset:0;
