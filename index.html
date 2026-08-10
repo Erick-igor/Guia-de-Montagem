@@ -80,8 +80,8 @@
     background:var(--line); border:1px solid var(--line);
     border-radius:var(--radius); overflow:hidden; margin-top:26px;
   }
-  @media (min-width:640px){ .category-grid{ grid-template-columns:repeat(4, 1fr); } }
-  @media (min-width:1000px){ .category-grid{ grid-template-columns:repeat(7, 1fr); } }
+ @media (min-width:640px){ .category-grid{ grid-template-columns:repeat(4, 1fr); } }
+@media (min-width:1000px){ .category-grid{ grid-template-columns:repeat(4, 1fr); } }
   .category-grid button{
     appearance:none; border:none; cursor:pointer;
     background:var(--bg-panel); color:var(--text);
@@ -503,6 +503,66 @@ const COMPONENTS = [
       {title:"Salve e saia", desc:"Pressione F10, confirme \"Save and Exit\" e o computador vai reiniciar já com as novas configurações."}
     ],
     warning:"Se a tela ficar preta após ativar o XMP, reinicie e volte a configuração padrão — pode ser incompatibilidade entre RAM e placa-mãe." }
+{ id:"fundamentos-redes", label:"Fundamentos de Redes", title:"Fundamentos de Redes de Computadores",
+    desc:"Conceitos essenciais para entender como uma rede funciona antes de configurar qualquer equipamento.",
+    time:"~15 min de leitura", tools:["📚 Nível: teórico","🎯 Pré-requisito: nenhum"],
+    steps:[
+      {title:"O que é uma rede de computadores", desc:"Uma rede é um conjunto de dispositivos (computadores, celulares, impressoras, etc.) conectados entre si para compartilhar dados, arquivos e acesso à internet. A conexão pode ser por cabo (Ethernet) ou sem fio (Wi-Fi)."},
+      {title:"LAN, WAN e WLAN", desc:"LAN (Local Area Network) é uma rede local, como a de uma casa ou escritório. WAN (Wide Area Network) é uma rede que cobre uma área grande, como a internet, conectando várias LANs entre si. WLAN é a versão sem fio da LAN, usando Wi-Fi em vez de cabos."},
+      {title:"Modem, roteador, switch e access point", desc:"O modem converte o sinal da operadora (fibra, cabo, ADSL) em um formato que a rede local entende. O roteador direciona o tráfego entre a internet e os dispositivos da LAN, além de criar o Wi-Fi. O switch conecta vários dispositivos por cabo dentro da mesma rede, sem rotear tráfego externo. O access point só distribui Wi-Fi, sem rotear — costuma ser usado para ampliar a cobertura de uma rede já existente."},
+      {title:"IP, máscara de rede, gateway e DNS", desc:"O IP é o \"endereço\" de um dispositivo na rede. A máscara de rede define quantos dispositivos cabem nessa rede local. O gateway é o dispositivo (geralmente o roteador) que leva o tráfego da rede local para fora, até a internet. O DNS traduz nomes de domínio (como google.com) para o IP real do servidor."},
+      {title:"IPv4 e noções de IPv6", desc:"O IPv4 é o formato mais comum, com endereços como 192.168.0.1 — mas o número de combinações possíveis já está se esgotando. O IPv6 é o sucessor, com endereços muito mais longos (ex: 2001:0db8::1) e capacidade praticamente ilimitada, sendo adotado aos poucos por operadoras e sites."},
+      {title:"TCP x UDP", desc:"TCP é um protocolo que garante a entrega dos dados, confirmando cada pacote recebido — ideal para sites e transferências de arquivo, onde nada pode se perder. UDP é mais rápido, mas não garante entrega — usado em transmissões ao vivo, jogos online e chamadas de vídeo, onde velocidade importa mais que perfeição."},
+      {title:"O que são portas de rede", desc:"Portas são canais numerados que identificam qual serviço deve receber os dados que chegam num dispositivo. A porta 80 é usada por sites (HTTP), a 443 por sites seguros (HTTPS) e a 21 por transferência de arquivos (FTP), por exemplo. Um mesmo IP pode rodar vários serviços ao mesmo tempo, cada um na sua porta."}
+    ],
+    warning:null },
+
+  { id:"montagem-cabos", label:"Montagem de Cabos", title:"Montagem de Cabos de Rede (RJ45)",
+    desc:"Como preparar e crimpar um cabo de rede do zero, do corte ao teste final.",
+    time:"~20 min", tools:["🔧 Ferramenta: alicate de crimpar","✂️ Ferramenta: estilete ou decapador","🧪 Item: testador de cabo (opcional)"],
+    steps:[
+      {title:"Escolha o tipo de cabo", desc:"Cat5e suporta até 1 Gbps e é o mais comum em instalações residenciais. Cat6 suporta até 10 Gbps em distâncias curtas, com melhor blindagem contra interferência. Cat6A é uma versão reforçada do Cat6, indicada para ambientes comerciais ou cabos mais longos."},
+      {title:"Separe as ferramentas necessárias", desc:"Você vai precisar de um alicate de crimpar RJ45, conectores RJ45, um estilete ou decapador de cabo e, opcionalmente, um testador de cabos para conferir o resultado no final."},
+      {title:"Corte e desencape o cabo", desc:"Corte a ponta do cabo de forma reta. Com o decapador (ou cuidadosamente com um estilete), remova cerca de 2 a 3 cm da capa externa, expondo os 4 pares de fios internos sem cortar o revestimento deles."},
+      {title:"Organize os fios na ordem certa", desc:"Desenrole os pares e alinhe os 8 fios lado a lado seguindo o padrão escolhido (veja o próximo passo), depois corte as pontas retas com cerca de 1,2 a 1,5 cm de comprimento para encaixar no conector."},
+      {title:"Padrões T568A e T568B", desc:"T568B (o mais usado no Brasil) segue a ordem: laranja/branco, laranja, verde/branco, azul, azul/branco, verde, marrom/branco, marrom. T568A inverte a posição dos pares laranja e verde. O importante é usar o mesmo padrão nas duas pontas do cabo."},
+      {title:"Cabo direto x crossover", desc:"O cabo direto usa o mesmo padrão nas duas pontas (T568B nas duas, por exemplo) e é o usado para conectar computador a roteador ou switch. O crossover usa um padrão diferente em cada ponta e era usado para ligar dois computadores diretamente — hoje a maioria dos equipamentos ajusta isso sozinha (Auto MDI-X), tornando o crossover raramente necessário."},
+      {title:"Insira no conector e crimpe", desc:"Empurre os 8 fios organizados até o fundo do conector RJ45, garantindo que todos toquem os contatos metálicos igualmente. Encaixe o conector no alicate de crimpar e aperte com firmeza até sentir o clique que fixa os pinos nos fios."},
+      {title:"Teste o cabo", desc:"Conecte as duas pontas em um testador de cabos (ou tente uma conexão real entre dois dispositivos). Se algum fio estiver invertido ou mal encaixado, o testador indica exatamente qual pino está com problema."},
+      {title:"Problemas comuns na crimpagem", desc:"Os erros mais frequentes são: fios fora de ordem, fios que não chegam até o fundo do conector antes de crimpar, capa do cabo cortada de menos (deixando fios soltos) ou de mais (parte sem proteção dentro do conector), e crimpagem fraca que não fixa os pinos corretamente."}
+    ],
+    warning:"Sempre confira a ordem dos fios antes de crimpar — depois de crimpado, o conector não pode ser reaproveitado." },
+
+  { id:"criar-lan", label:"Criar uma Rede LAN", title:"Como Criar uma Rede LAN",
+    desc:"Passo a passo para montar uma rede local conectando computadores, switch e roteador.",
+    time:"~15 min", tools:["🔗 Item: cabos de rede prontos","🖥️ Equipamento: roteador ou switch"],
+    steps:[
+      {title:"Planeje a topologia", desc:"Decida como os dispositivos vão se conectar: todos direto no roteador, ou alguns num switch que depois se conecta ao roteador — útil quando há mais aparelhos do que portas disponíveis."},
+      {title:"Conecte os cabos", desc:"Ligue cada dispositivo (PC, impressora, NAS, etc.) a uma porta LAN do roteador ou do switch usando um cabo de rede já crimpado e testado."},
+      {title:"Ligue o switch ao roteador, se houver", desc:"Se estiver usando um switch, conecte uma das portas dele a uma porta LAN do roteador — essa ligação é o que faz os dois equipamentos fazerem parte da mesma rede."},
+      {title:"Confirme que os dispositivos receberam IP", desc:"Com o DHCP do roteador ativado (configuração padrão na maioria), cada dispositivo conectado recebe um IP automaticamente. No Windows, veja em Configurações > Rede; no Linux, use o comando ip a."},
+      {title:"Teste a comunicação entre dispositivos", desc:"Use o comando ping (por exemplo, ping 192.168.0.10) de um dispositivo para o IP de outro na mesma rede. Se houver resposta, a rede local está funcionando corretamente."},
+      {title:"Ative o compartilhamento, se necessário", desc:"Para compartilhar arquivos ou impressoras entre os computadores da LAN, ative o compartilhamento de rede nas configurações do sistema operacional e defina quais pastas ou dispositivos ficam visíveis para os outros."}
+    ],
+    warning:null },
+
+  { id:"config-roteador", label:"Config. do Roteador", title:"Configuração do Roteador",
+    desc:"Ajustes práticos no painel do roteador para deixar a rede segura, organizada e sob seu controle.",
+    time:"~25 min", tools:["💻 Necessário: computador ou celular conectado à rede"],
+    steps:[
+      {title:"Entre no painel do roteador", desc:"Abra um navegador e digite o IP do roteador (geralmente 192.168.0.1 ou 192.168.1.1 — veja a etiqueta embaixo do aparelho se não souber). Faça login com o usuário e senha padrão, também impressos na etiqueta, ou os que você já definiu antes."},
+      {title:"Altere o nome da rede Wi-Fi (SSID)", desc:"Na seção de configurações sem fio (Wireless), troque o nome padrão da rede por algo que você reconheça facilmente. Evite colocar informações pessoais no nome, como endereço ou nome completo, por questão de privacidade."},
+      {title:"Configure uma senha forte", desc:"Defina o tipo de segurança como WPA2 ou, se disponível, WPA3 — nunca deixe a rede aberta nem use WEP, um padrão antigo e fácil de quebrar. Escolha uma senha longa, com letras, números e símbolos, evitando datas ou sequências óbvias."},
+      {title:"Entenda e configure o DHCP", desc:"O DHCP é o serviço que distribui IPs automaticamente para cada dispositivo que entra na rede, evitando que você precise configurar isso manualmente em cada aparelho. Ele já vem ativado por padrão na maioria dos roteadores. Você pode definir a faixa de IPs que ele distribui (por exemplo, de 192.168.0.100 a 192.168.0.200), o que é útil para reservar uma parte da faixa para dispositivos com IP fixo."},
+      {title:"Defina o IP da LAN do roteador", desc:"Esse é o endereço que o próprio roteador usa dentro da rede local (frequentemente 192.168.0.1) e também o endereço usado para acessar o painel de configurações dele. Mudar esse IP raramente é necessário, mas pode ajudar a evitar conflitos se você tiver mais de uma rede."},
+      {title:"Confira o Gateway", desc:"O gateway é a \"porta de saída\" da sua rede local para a internet — normalmente é o próprio IP do roteador. Todo dispositivo da rede usa esse endereço como referência sempre que precisa acessar algo fora da LAN, como um site na internet. Se esse valor estiver errado num dispositivo, ele consegue se comunicar com outros da mesma rede, mas não consegue navegar na internet."},
+      {title:"Ajuste o DNS, se quiser", desc:"Por padrão, o roteador costuma repassar o DNS da sua operadora. Você pode trocar por serviços públicos como o do Google (8.8.8.8 e 8.8.4.4) ou Cloudflare (1.1.1.1), que às vezes oferecem navegação mais rápida ou filtros de segurança extras, dependendo do serviço escolhido."},
+      {title:"Reserve um IP fixo para um dispositivo", desc:"Em vez de configurar um IP fixo manualmente em cada aparelho (o que pode causar conflitos se você errar), a maioria dos roteadores permite reservar um IP dentro do próprio DHCP, associando um endereço fixo ao endereço MAC do dispositivo. Isso é muito útil para impressoras, servidores caseiros ou câmeras de segurança, que precisam sempre ter o mesmo endereço para serem encontrados na rede."},
+      {title:"Diferença entre LAN e WAN no roteador", desc:"No painel do roteador, a seção LAN mostra as configurações da sua rede local, os dispositivos dentro de casa. A seção WAN mostra a conexão do roteador com a internet, fornecida pela sua operadora — é ali que aparecem informações como o tipo de conexão (PPPoE, IP dinâmico, etc.) definidas pelo provedor."},
+      {title:"Entenda o NAT", desc:"NAT (Network Address Translation) é a tecnologia que permite que vários dispositivos da sua rede local, cada um com um IP interno (como 192.168.0.10, 192.168.0.11...), compartilhem um único IP público fornecido pela operadora para acessar a internet. É graças ao NAT que você não precisa de um IP público para cada aparelho em casa — o roteador cuida de \"traduzir\" o tráfego de cada dispositivo interno para esse IP único, e vice-versa."},
+      {title:"Port forwarding, de forma conceitual", desc:"Por padrão, o NAT bloqueia conexões vindas de fora tentando alcançar um dispositivo específico da sua rede — o que é bom para segurança, mas às vezes impede serviços como servidores de jogos ou acesso remoto de funcionarem. O port forwarding cria uma regra dizendo ao roteador: \"tudo que chegar na porta X, direcione para o dispositivo Y da minha rede local\". Use com cautela: abra apenas as portas realmente necessárias, mantenha o dispositivo de destino atualizado e, sempre que possível, prefira alternativas mais seguras como uma VPN para acesso remoto — cada porta aberta é uma via a mais de exposição da sua rede para a internet."}
+    ],
+    warning:"Só ative port forwarding para serviços que você realmente precisa expor, e mantenha o dispositivo de destino com senha forte e atualizações em dia — cada porta aberta aumenta a superfície de ataque da sua rede." }
 ];
 
 /* Agrupamento das abas: cada categoria abre e mostra suas peças */
@@ -513,7 +573,8 @@ const GROUPS = [
   { label:"Refrigeração", items:["cooler","watercooler","fans","pasta","backplate"] },
   { label:"Cabos & Conexões", items:["cabosenergia","cabossata","cabovideo"] },
   { label:"Expansão", items:["wifi","som"] },
-  { label:"Software", items:["bios"] }
+  { label:"Software", items:["bios"] },
+  { label:"Redes", items:["fundamentos-redes","montagem-cabos","criar-lan","config-roteador"] }
 ];
 
 /* ---------------------------------------------------------------
@@ -542,7 +603,11 @@ const VIDEOS = {
   cabovideo:    "https://www.youtube.com/embed/_ScEJNNmzIE?si=QDf22J6Z4tDD9yfU",   // Cabo de Vídeo / Monitor
   wifi:         "https://www.youtube.com/embed/dfcbiGjeTCk?si=Tm4p20fu2ZJQvQ1o",   // Wi-Fi / Bluetooth
   som:          "https://www.youtube.com/embed/iutBpc5kgpQ?si=jSrfExWzPuNrfS6K",   // Placa de Som Dedicada
-  bios:         "https://www.youtube.com/embed/U3wn7mxtHQg?si=iItQ7vHMtNxLH_YB"    // Configuração da BIOS
+  bios:         "https://www.youtube.com/embed/U3wn7mxtHQg?si=iItQ7vHMtNxLH_YB",   // Configuração da BIOS
+  "fundamentos-redes": "https://www.youtube.com/embed/vqrvOz1zSgY?si=Uh6wAnsNk_cZakwN",   // Fundamentos de Redes
+  "montagem-cabos":    "https://www.youtube.com/embed/OT_5EjDfD6M?si=mE5VdSj0_kiwhDiC",   // Montagem de Cabos (RJ45)
+  "criar-lan":          "https://www.youtube.com/embed/HjQnRikPEK4?si=mxbGNLBD6f3Y_nRE",   // Criar uma Rede LAN
+  "config-roteador":    "https://www.youtube.com/embed/UQwxreDeKYQ?si=d3qryG9JRKqD7uUD"    // Configuração do Roteador
 };
 
 /* Passo extra (dica prática) adicionado ao final de cada peça */
